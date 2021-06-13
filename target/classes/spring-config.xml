@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+">
+
+
+
+    <!-- 自动扫描并实例化 -->
+    <context:component-scan base-package="com.lxy.springMVC"/>
+<!--    <context:component-scan base-package="com.lxy.springMVC.controller,com.lxy.springMVC.service,com.lxy.springMVC.aspect"/>-->
+
+    <!-- 启用AOP代理 -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!-- 提供Controller请求转发，JSON自动转换等功能 -->
+    <mvc:annotation-driven/>
+
+    <!--使用默认的Servlet来响应静态资源文件，如：html、css、js、图片等-->
+    <mvc:default-servlet-handler/>
+
+    <!-- SpringMVC 视图解析器，用于定位视图文件所在位置 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+
+</beans>

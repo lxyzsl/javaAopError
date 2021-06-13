@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- 全局设置 -->
+    <settings>
+        <!-- 启用缓存 -->
+        <setting name="cacheEnabled" value="true" />
+        <!-- 日志框架 -->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
+
+    <!-- MyBatis可以配置适应多个环境，例如：开发、测试和生产环境需要有不同的配置。default为默认的环境配置。 -->
+    <environments default="development">
+        <!-- 环境配置：每个 environment 元素定义的环境 ID -->
+        <environment id="development">
+            <!-- 事务管理配置 -->
+            <transactionManager type="JDBC"/>
+
+            <!-- 数据源配置 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/JAVA_WEB"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+
+                <!--  连接池参数  -->
+                <!--  最大连接数  -->
+                <property name="poolMaximumActiveConnections" value="10"/>
+                <!--  最大空闲连接数  -->
+                <property name="poolMaximumIdleConnections" value="5"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+
+    <!-- 映射文件 -->
+    <mappers>
+        <!-- XML配置文件 -->
+<!--        <mapper resource="mapper/UserMapper.xml"/>-->
+<!--        <mapper resource="mapper/CourseMapper.xml"/>-->
+    </mappers>
+</configuration>

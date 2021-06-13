@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.mama.ls02.mapper.CourseMapper">
+
+    <!-- 单表查询 -->
+<!--    <select id="userCourse" resultType="UserCourse">-->
+<!--        SELECT * FROM user_course WHERE user_id = #{userId}-->
+<!--    </select>-->
+
+    <!--
+    多对一表关联（使用子查询）
+    -->
+    <select id="userCourse" resultMap="userCourseMapper1">
+        SELECT * FROM user_course WHERE user_id = #{userId}
+    </select>
+
+    <resultMap id="userCourseMapper1" type="edu.mama.ls02.bean.UserCourse">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="studied" column="studied"/>
+        <association property="course" column="course_id" javaType="edu.mama.ls02.bean.Course" select="findCourseById"/>
+        <association property="studying" column="studying" javaType="edu.mama.ls02.bean.Lesson" select="findLessonById"/>
+    </resultMap>
+
+    <select id="findCourseById" resultType="edu.mama.ls02.bean.Course">
+        SELECT * FROM course WHERE id = #{id}
+    </select>
+
+    <select id="findLessonById" resultType="edu.mama.ls02.bean.Lesson">
+        SELECT * FROM lesson WHERE id = #{id}
+    </select>
+
+
+    <!--
+    多对一表关联（使用表连接）
+    -->
+<!--    <select id="userCourse" resultMap="userCourseMapper2">-->
+<!--        SELECT-->
+<!--               uc.*,-->
+<!--               c.name course_name,-->
+<!--               c.teacher course_teacher,-->
+<!--               c.hour course_hour,-->
+<!--               l.name lesson_name-->
+<!--        FROM user_course uc-->
+<!--        LEFT JOIN course c ON c.id = uc.course_id-->
+<!--        LEFT JOIN lesson l ON l.id = uc.studying-->
+<!--        WHERE uc.user_id = #{userId}-->
+<!--    </select>-->
+
+<!--    <resultMap id="userCourseMapper2" type="UserCourse">-->
+<!--        <id property="id" column="id"/>-->
+<!--        <result property="userId" column="user_id"/>-->
+<!--        <result property="studied" column="studied"/>-->
+<!--        <association property="course" column="course_id" javaType="Course">-->
+<!--            <id property="id" column="course_id"/>-->
+<!--            <result property="name" column="course_name"/>-->
+<!--            <result property="teacher" column="course_teacher"/>-->
+<!--            <result property="hour" column="course_hour"/>-->
+<!--        </association>-->
+<!--        <association property="studying" column="studying" javaType="Lesson">-->
+<!--            <id property="id" column="studying"/>-->
+<!--            <result property="name" column="lesson_name"/>-->
+<!--            <result property="courseId" column="course_id"/>-->
+<!--        </association>-->
+<!--    </resultMap>-->
+
+    <select id="courseDetail" resultMap="courseDetailMapper">
+        SELECT * FROM course WHERE id = #{id}
+    </select>
+
+    <resultMap id="courseDetailMapper" type="edu.mama.ls02.bean.Course">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="teacher" column="teacher"/>
+        <result property="hour" column="hour"/>
+        <collection property="lessons" column="id" javaType="java.util.ArrayList" ofType="edu.mama.ls02.bean.Lesson" select="findLessonByCourseId"/>
+    </resultMap>
+
+    <select id="findLessonByCourseId" resultType="edu.mama.ls02.bean.Lesson">
+        SELECT * FROM lesson WHERE course_id = #{courseId}
+    </select>
+</mapper>
